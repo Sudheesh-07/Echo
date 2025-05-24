@@ -9,6 +9,9 @@ extension BuildContextExtension on BuildContext {
   /// Returns the current [TextTheme] from the theme.
   TextTheme get textTheme => Theme.of(this).textTheme;
 
+/// Returns the current [ThemeData] from the theme.
+  Brightness get theme => Theme.of(this).brightness;
+
   /// Returns the size of the current media (screen).
   Size get size => MediaQuery.of(this).size;
 
