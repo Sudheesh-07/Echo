@@ -7,7 +7,9 @@ class AppRoutes {
   /// for Get started Page
   static const String initial = '/';
   /// for Authentication Page
-  static const String login = '/login';
+  static const String authentication = '/auth';
+    /// for Authentication Page
+  static const String otp = '/otp';
   /// for home page
   static const String home = '/home';
 }

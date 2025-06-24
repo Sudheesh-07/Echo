@@ -1,6 +1,8 @@
 import 'package:echo/src/core/routes/app_routes.dart';
 import 'package:echo/src/core/routes/route_observer.dart';
+import 'package:echo/src/features/authentication/view/authentication_page.dart';
 import 'package:echo/src/features/authentication/view/get_started_page.dart';
+import 'package:echo/src/features/authentication/view/otp_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -26,6 +28,18 @@ class AppRouters {
         builder:
             (BuildContext context, GoRouterState state) =>
                 const GetStartedPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.authentication,
+        builder:
+            (BuildContext context, GoRouterState state) =>
+                AuthenticationPage(isLogIn: state.extra! as bool),
+      ),
+      GoRoute(
+        path: AppRoutes.otp,
+        builder:
+            (BuildContext context, GoRouterState state) =>
+                OtpScreen(email: state.extra! as String),
       ),
     ],
   );

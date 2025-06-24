@@ -1,7 +1,10 @@
 import 'package:echo/src/core/routes/app_router.dart';
+import 'package:echo/src/features/authentication/cubit/auth_cubit.dart';
 import 'package:echo/src/theme/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nested/nested.dart';
 
 /// MyApp is the main application widget which extends StatelessWidget.
 class MyApp extends StatelessWidget {
@@ -9,12 +12,20 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) => MaterialApp.router(
+  Widget build(BuildContext context) => MultiBlocProvider(
+    providers: <SingleChildWidget>[
+     BlocProvider<AuthCubit>(create: (BuildContext context) => AuthCubit()),
+      
+    ],
+    child: MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
       darkTheme: darkTheme,
+      themeMode: ThemeMode.system,
       // ignore: lines_longer_than_80_chars
-      routerConfig: AppRouters.router, // The home page will be the on in the app router file [AppRouters]
+      routerConfig:
+          AppRouters
+              .router, // The home page will be the on in the app router file [AppRouters]
       builder: (BuildContext context, Widget? child) {
         final Brightness brightness = MediaQuery.of(context).platformBrightness;
 
@@ -37,5 +48,6 @@ class MyApp extends StatelessWidget {
 
         return child!;
       },
-    );
+    ),
+  );
 }

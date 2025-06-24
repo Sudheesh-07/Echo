@@ -1,10 +1,11 @@
 // ignore_for_file: deprecated_member_use
-
 import 'package:echo/src/core/extensions/context_extension.dart';
 import 'package:echo/src/core/extensions/image_extensions.dart';
+import 'package:echo/src/core/routes/app_routes.dart';
 import 'package:echo/src/core/utils/widgets/elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 /// This is the get started page
 class GetStartedPage extends StatefulWidget {
@@ -103,8 +104,42 @@ class _GetStartedPageState extends State<GetStartedPage> {
                     textAlign: TextAlign.center,
                     style: context.textTheme.bodyLarge,
                   ),
+                  const Gap(20),
+                  ElevatedButton(
+                    onPressed:
+                        () => context.push(
+                          AppRoutes.authentication,
+                          extra: false,
+                        ),
+                    style: ElevatedButton.styleFrom(
+                      elevation: 5,
+                      shadowColor: context.colorScheme.primary,
+                      backgroundColor: Colors.white,
+                      fixedSize: const Size(350, 50),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 16,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                    ),
+                    child: Text(
+                      'Register',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: context.colorScheme.primary,
+                      ),
+                    ),
+                  ),
                   const Gap(15),
-                  EchoButton(label: 'Get Started', onPressed: () {}),
+                  EchoButton(
+                    label: 'Log In',
+                    onPressed:
+                        () =>
+                            context.push(AppRoutes.authentication, extra: true),
+                  ),
                 ],
               ),
             ),

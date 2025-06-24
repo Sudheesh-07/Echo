@@ -13,4 +13,11 @@ class AppImages {
 
   /// Background for login page light theme
   static const String loginBgLight = 'assets/images/light_theme_bg.png';
+
+  /// Loading animation
+  static const String loadingAnimation = 'assets/animations/loading.lottie';
+
+  /// Loading animation for dark theme
+  static const String loadingAnimationDark =
+      'assets/animations/loading_dark.lottie';
 }

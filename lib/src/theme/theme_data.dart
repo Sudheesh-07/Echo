@@ -39,7 +39,33 @@ final ThemeData lightTheme = ThemeData(
   ),
   colorScheme: const ColorScheme.light(
     primary: Color(0xFF6366F1),
-    secondary: Color(0xFFFCD34D), // For things like anonymous tags
+    secondary: Color(0xFFFCD34D), 
+    primaryFixedDim: const Color(0xFF9CA3AF),
+    surface: Colors.white,
+  ),
+  inputDecorationTheme: const InputDecorationTheme(
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(50)),
+      borderSide: BorderSide(color: Color(0xFF374151)),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(50)),
+      borderSide: BorderSide(color: Color(0xFF374151)),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(50)),
+      borderSide: BorderSide(color: Color(0xFF6366F1), width: 2),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(50)),
+      borderSide: BorderSide(color: Colors.red),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(50)),
+      borderSide: BorderSide(color: Colors.red, width: 2),
+    ),
+    filled: true,
+    fillColor: Colors.white,
   ),
 );
 
@@ -88,6 +114,24 @@ final ThemeData darkTheme = ThemeData(
   ),
   colorScheme: const ColorScheme.dark(
     primary: Color(0xFF6366F1),
-    secondary: Color(0xFFFBBF24), // Anonymous tags
+    secondary: Color(0xFFFBBF24),
+    onPrimary: Colors.white,
+    primaryFixedDim: const Color(0xFF9CA3AF),
+    surface: Color(0xFF1F2937),
+  ),
+  inputDecorationTheme: const InputDecorationTheme(
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(50)),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(50)),
+      borderSide: BorderSide(color: Color(0xFF6366F1)),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(30)),
+      borderSide: BorderSide(color: Colors.red),
+    ),
+    fillColor: Color(0xFF1F2937),
+    filled: true,
   ),
 );

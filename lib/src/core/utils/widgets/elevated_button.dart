@@ -32,7 +32,7 @@ class EchoButton extends StatelessWidget {
           backgroundColor: context.colorScheme.primary,
           foregroundColor: Colors.white,
           fixedSize: const Size(350, 50),
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
           ),
