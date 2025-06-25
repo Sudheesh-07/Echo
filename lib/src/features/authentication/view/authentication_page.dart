@@ -1,7 +1,7 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'dart:async';
-import 'dart:ui';
+
 import 'package:echo/src/core/extensions/context_extension.dart';
 import 'package:echo/src/core/extensions/image_extensions.dart';
 import 'package:echo/src/core/routes/app_routes.dart';
@@ -11,9 +11,9 @@ import 'package:echo/src/core/utils/widgets/loading_animation.dart';
 import 'package:echo/src/core/utils/widgets/snackbarutils.dart';
 import 'package:echo/src/features/authentication/cubit/auth_cubit.dart';
 import 'package:echo/src/features/authentication/cubit/auth_state.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 

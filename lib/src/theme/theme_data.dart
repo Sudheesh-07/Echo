@@ -40,7 +40,8 @@ final ThemeData lightTheme = ThemeData(
   colorScheme: const ColorScheme.light(
     primary: Color(0xFF6366F1),
     secondary: Color(0xFFFCD34D), 
-    primaryFixedDim: const Color(0xFF9CA3AF),
+    primaryFixedDim:  Color(0xFF9CA3AF),
+    // ignore: avoid_redundant_argument_values
     surface: Colors.white,
   ),
   inputDecorationTheme: const InputDecorationTheme(
@@ -116,7 +117,7 @@ final ThemeData darkTheme = ThemeData(
     primary: Color(0xFF6366F1),
     secondary: Color(0xFFFBBF24),
     onPrimary: Colors.white,
-    primaryFixedDim: const Color(0xFF9CA3AF),
+    primaryFixedDim:  Color(0xFF9CA3AF),
     surface: Color(0xFF1F2937),
   ),
   inputDecorationTheme: const InputDecorationTheme(

@@ -2,17 +2,25 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:echo/src/core/utils/constants/api_constants.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get_storage/get_storage.dart';
 
+/// This Class is for the services of Authentication Like login signup etc
 class AuthService {
-  // Singleton instance
-  static final AuthService _instance = AuthService._internal();
+  /// Singleton constructor
   factory AuthService() => _instance;
   AuthService._internal() {
     _initDio();
   }
-
+  // Singleton instance
+  static final AuthService _instance = AuthService._internal();
+  // Dio instance (Dio is a HTTP client which helps us have more control over
+  //the HTTP requests)
   late final Dio _dio;
-  final String _baseUrl = ApiRoutes.auth; // Replace with your actual API URL
+
+  /// GetStorage instance (GetStorage is a key-value storage for
+  /// Flutter it stores data locally)
+  GetStorage storage = GetStorage();
+  final String _baseUrl = ApiRoutes.auth;
 
   void _initDio() {
     _dio = Dio(
@@ -21,7 +29,7 @@ class AuthService {
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         sendTimeout: const Duration(seconds: 30),
-        headers: {
+        headers: <String, dynamic>{
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
@@ -31,7 +39,7 @@ class AuthService {
     // Add interceptors
     _dio.interceptors.add(
       InterceptorsWrapper(
-        onRequest: (options, handler) {
+        onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
           if (kDebugMode) {
             print('Request: ${options.method} ${options.uri}');
             print('Headers: ${options.headers}');
@@ -39,13 +47,16 @@ class AuthService {
           }
           return handler.next(options);
         },
-        onResponse: (response, handler) {
+        onResponse: (
+          Response<dynamic> response,
+          ResponseInterceptorHandler handler,
+        ) {
           if (kDebugMode) {
             print('Response: ${response.statusCode} ${response.data}');
           }
           return handler.next(response);
         },
-        onError: (DioException e, handler) {
+        onError: (DioException e, ErrorInterceptorHandler handler) {
           if (kDebugMode) {
             print('Error: ${e.response?.statusCode} ${e.response?.data}');
           }
@@ -56,24 +67,17 @@ class AuthService {
 
     if (kDebugMode) {
       _dio.interceptors.add(
-        LogInterceptor(
-          request: true,
-          requestHeader: true,
-          requestBody: true,
-          responseHeader: true,
-          responseBody: true,
-          error: true,
-        ),
+        LogInterceptor(requestBody: true, responseBody: true),
       );
     }
   }
 
-  // Login - Request OTP
+  /// Login - Request OTP
   Future<String> sendOtp(String email) async {
     try {
-      final response = await _dio.post<String>(
+      final Response<String> response = await _dio.post<String>(
         '/login',
-        data: {'email': email},
+        data: <String, String>{'email': email},
       );
       if (response.data != null && response.data!.contains('OTP sent')) {
         return 'Otp Sent';
@@ -87,11 +91,8 @@ class AuthService {
       if (e.response != null) {
         if (e.response?.statusCode == 429) {
           return 'Error: Too many requests.';
-        }
-        else {
-          throw Exception(
-            e.response?.data.toString() ?? 'Unexpected error',
-          );
+        } else {
+          throw Exception(e.response?.data.toString() ?? 'Unexpected error');
         }
       } else {
         throw Exception('Network error: ${e.message}');
@@ -101,15 +102,17 @@ class AuthService {
     }
   }
 
-  // Verify OTP
+  /// Verify OTP that the user entered
   Future<String> verifyOtp(String email, String otp) async {
     try {
-      final response = await _dio.post<Map<String, dynamic>>(
-        '/verify',
-        data: {'email': email, 'otp': otp},
-      );
-      final token = response.data?['token'] as String?;
+      final Response<Map<String, dynamic>> response = await _dio
+          .post<Map<String, dynamic>>(
+            '/verify',
+            data: <String, String>{'email': email, 'otp': otp},
+          );
+      final String? token = response.data?['token'] as String?;
       if (token != null) {
+        await storage.write('token', token);
         return token;
       } else {
         throw Exception('Token not found in response');
@@ -117,7 +120,8 @@ class AuthService {
     } on DioException catch (e) {
       if (e.response != null) {
         throw Exception(
-          e.response?.data['detail']?.toString() ?? 'Invalid OTP',
+          (e.response?.data as Map<String, dynamic>)['detail']?.toString() ??
+              'Invalid OTP',
         );
       } else {
         throw Exception('Network error: ${e.message}');

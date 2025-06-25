@@ -1,13 +1,12 @@
 import 'package:dotlottie_loader/dotlottie_loader.dart';
 import 'package:echo/src/core/extensions/context_extension.dart';
 import 'package:echo/src/core/extensions/image_extensions.dart';
-import 'package:echo/src/core/utils/constants/padding_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 /// Displays a loading dialog with a circular progress indicator.
 ///
-/// The dialog prevents user interaction by setting `barrierDismissible` to false
+/// The dialog prevents user interaction by setting `barrierDismissible`to false
 /// and intercepts back navigation using `WillPopScope`.
 ///
 /// [context] is the BuildContext to display the dialog.

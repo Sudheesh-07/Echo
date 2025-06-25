@@ -21,11 +21,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
       darkTheme: darkTheme,
+      // this uses the default theme of the device
+      // ignore: avoid_redundant_argument_values
       themeMode: ThemeMode.system,
       // ignore: lines_longer_than_80_chars
       routerConfig:
           AppRouters
-              .router, // The home page will be the on in the app router file [AppRouters]
+              .router, /// The [GoRouter] is used to configure the app's routes.
       builder: (BuildContext context, Widget? child) {
         final Brightness brightness = MediaQuery.of(context).platformBrightness;
 

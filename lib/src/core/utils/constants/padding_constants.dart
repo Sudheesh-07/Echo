@@ -18,6 +18,8 @@ class PaddingConstants {
 
 /// Extension to add .copyWith() to EdgeInsets constants
 extension EdgeInsetsCopyWith on EdgeInsets {
+  /// Extension to add .copyWith() to EdgeInsets constants 
+  /// This helps to customize the padding whenever needed
   EdgeInsets copyWith({
     double? left,
     double? top,

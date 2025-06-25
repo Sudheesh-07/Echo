@@ -1,4 +1,4 @@
-import 'dart:ui';
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
 import 'package:echo/src/core/extensions/context_extension.dart';
 import 'package:echo/src/core/extensions/image_extensions.dart';
@@ -106,6 +106,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       context,
                       'OTP verified successfully',
                     );
+                    
                   }else if (state is AuthError) {
                     SnackbarUtils.showError(
                       context,

@@ -14,7 +14,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> sendOtp({required String email}) async {
     try {
       emit(const AuthLoading());
-      final response = await _authService.sendOtp(email);
+      final String response = await _authService.sendOtp(email);
       if (response.contains('Otp Sent')) {
         emit(AuthOtpSent(email));
       }
@@ -29,7 +29,7 @@ class AuthCubit extends Cubit<AuthState> {
   /// Verify OTP that was sent
   Future<void> verifyOtp({required String email, required String otp}) async {
     try {
-      final token = await _authService.verifyOtp(email, otp);
+      await _authService.verifyOtp(email, otp);
       emit(const AuthOtpVerified());
     } on Exception catch (e) {
       emit(AuthError(e.toString()));

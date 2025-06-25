@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Utility class for displaying snackbars in the app.
+/// Utility class for displaying snack bars in the app.
 ///
 /// Provides methods for showing success, error, and informational messages
 /// using the `ScaffoldMessenger`.
