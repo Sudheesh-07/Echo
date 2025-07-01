@@ -46,9 +46,9 @@ class AuthOtpSent extends AuthState {
   // If you create two instances:
   // const state1 = AuthOtpSent('test@example.com');
   // const state2 = AuthOtpSent('test@example.com');
-  // Without this props override, state1 == state2 would return false because 
-  //they're different instances. 
-  //With the props override (assuming the parent class uses it for equality comparison), 
+  // Without this props override, state1 == state2 would return false because
+  //they're different instances.
+  //With the props override (assuming the parent class uses it for equality comparison),
   //they'll be considered equal because their email properties are equal.
   @override
   List<Object?> get props => <Object?>[email];
@@ -58,4 +58,7 @@ class AuthOtpSent extends AuthState {
 class AuthOtpVerified extends AuthState {
   /// Const constructor for [AuthOtpVerified].
   const AuthOtpVerified();
+  
+  @override
+  List<Object?> get props => <Object?>[];
 }

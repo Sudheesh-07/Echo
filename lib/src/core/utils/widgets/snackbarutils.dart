@@ -79,8 +79,8 @@ class SnackbarUtils {
       backgroundColor: backgroundColor,
       duration: duration,
       behavior: SnackBarBehavior.floating,
-      margin: EdgeInsets.only(
-        bottom: MediaQuery.of(context).size.height - 130, // Positions near top
+      margin: const EdgeInsets.only(
+        top:16,// Positions near top
         left: 16,
         right: 16,
       ),

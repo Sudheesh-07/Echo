@@ -76,7 +76,7 @@ class AuthService {
   Future<String> sendOtp(String email) async {
     try {
       final Response<String> response = await _dio.post<String>(
-        '/login',
+        '/send-otp',
         data: <String, String>{'email': email},
       );
       if (response.data != null && response.data!.contains('OTP sent')) {
@@ -110,12 +110,17 @@ class AuthService {
             '/verify',
             data: <String, String>{'email': email, 'otp': otp},
           );
-      final String? token = response.data?['token'] as String?;
-      if (token != null) {
-        await storage.write('token', token);
-        return token;
+      if (response.data?['message'] as String == 'OTP verified') {
+        final String? accessToken = response.data?['access_token'] as String?;
+        final String? refreshToken = response.data?['refresh_token'] as String?;
+        if (accessToken != null && refreshToken != null) {
+          await storage.write('access_token', accessToken);
+          await storage.write('refresh_token', refreshToken);
+          //return 'Token saved Success';
+        }
+        return 'Success';
       } else {
-        throw Exception('Token not found in response');
+        throw Exception('Invalid OTP');
       }
     } on DioException catch (e) {
       if (e.response != null) {

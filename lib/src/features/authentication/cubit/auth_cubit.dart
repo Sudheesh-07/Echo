@@ -27,12 +27,21 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   /// Verify OTP that was sent
-  Future<void> verifyOtp({required String email, required String otp}) async {
+  Future<String> verifyOtp({required String email, required String otp}) async {
     try {
-      await _authService.verifyOtp(email, otp);
-      emit(const AuthOtpVerified());
+      emit(const AuthLoading());
+      final String response = await _authService.verifyOtp(email, otp);
+      if (response == 'Success') {
+        emit(const AuthOtpVerified());
+        return 'Success';
+      }
+      else {
+        emit(AuthError(response));
+        return 'Error';
+      }
     } on Exception catch (e) {
       emit(AuthError(e.toString()));
+      return 'Error';
     }
   }
 }
