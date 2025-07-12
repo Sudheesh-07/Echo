@@ -58,7 +58,19 @@ class AuthOtpSent extends AuthState {
 class AuthOtpVerified extends AuthState {
   /// Const constructor for [AuthOtpVerified].
   const AuthOtpVerified();
-  
+
   @override
   List<Object?> get props => <Object?>[];
+}
+
+/// State when user name is ready.
+class AuthUserNameReady extends AuthState {
+  /// Const constructor for [AuthUserNameReady].
+  const AuthUserNameReady(this.userName);
+
+  /// User name.
+  final String userName;
+
+  @override
+  List<Object?> get props => <Object?>[userName];
 }

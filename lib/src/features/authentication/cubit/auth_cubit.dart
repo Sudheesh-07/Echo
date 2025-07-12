@@ -33,12 +33,25 @@ class AuthCubit extends Cubit<AuthState> {
       final String response = await _authService.verifyOtp(email, otp);
       if (response == 'Success') {
         emit(const AuthOtpVerified());
+        final String userName = await getUserName();
+        emit(AuthUserNameReady(userName));
         return 'Success';
       }
       else {
         emit(AuthError(response));
         return 'Error';
       }
+    } on Exception catch (e) {
+      emit(AuthError(e.toString()));
+      return 'Error';
+    }
+  }
+
+  /// Get random UserName
+  Future<String> getUserName() async {
+    try {
+      final String response = await _authService.getUserName();
+      return response;
     } on Exception catch (e) {
       emit(AuthError(e.toString()));
       return 'Error';

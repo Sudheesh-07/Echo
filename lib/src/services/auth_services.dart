@@ -135,4 +135,26 @@ class AuthService {
       throw Exception('Unexpected error: $e');
     }
   }
+
+  Future<String> getUserName() async {
+    try {
+      final Response<Map<String, dynamic>> response = await _dio.get<Map<String, dynamic>>('/random_username');
+      if (response.data?['username'] != null) {
+        return response.data?['username'] as String;
+      } else {
+        throw Exception('User name not found');
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+        throw Exception(
+          (e.response?.data as Map<String, dynamic>)['detail']?.toString() ??
+              'User name not found',
+        );
+      } else {
+        throw Exception('Network error: ${e.message}');
+      }
+    } catch (e) {
+      throw Exception('Unexpected error: $e');
+    }
+  }
 }

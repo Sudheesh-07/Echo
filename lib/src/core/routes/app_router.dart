@@ -2,9 +2,10 @@ import 'package:echo/src/core/routes/app_routes.dart';
 import 'package:echo/src/core/routes/route_observer.dart';
 import 'package:echo/src/features/authentication/view/authentication_page.dart';
 import 'package:echo/src/features/authentication/view/get_started_page.dart';
-import 'package:echo/src/features/authentication/view/homescreen.dart';
+import 'package:echo/src/features/authentication/view/navigation.dart';
 import 'package:echo/src/features/authentication/view/otp_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:echo/src/features/posts/views/add_post.dart';
+import 'package:flutter/material.dart' hide NavigationBar;
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 
@@ -25,28 +26,28 @@ class AppRouters {
   // The route configuration.
   static final GoRouter _router = GoRouter(
     navigatorKey: navigatorKey,
-    initialLocation: AppRoutes.initial,
-    observers: <NavigatorObserver>[currentRouteObserver],
-      redirect: (BuildContext context, GoRouterState state) {
-      final String? token = storage.read<String>('token');
+    initialLocation: AppRoutes.home,
+    // observers: <NavigatorObserver>[currentRouteObserver],
+    //   redirect: (BuildContext context, GoRouterState state) {
+    //   final String? token = storage.read<String>('token');
 
       
-      final bool isLoggedIn = token != null && token.isNotEmpty;
+    //   final bool isLoggedIn = token != null && token.isNotEmpty;
 
-      // if user tries to go to home but is not logged in
-      if (!isLoggedIn && state.fullPath == AppRoutes.home) {
-        return '/';
-      }
+    //   // if user tries to go to home but is not logged in
+    //   if (!isLoggedIn && state.fullPath == AppRoutes.home) {
+    //     return '/';
+    //   }
 
-      // if user is logged in but tries to access auth flow pages
-      if (isLoggedIn &&
-          (state.fullPath == '/' || state.fullPath!.startsWith('/auth'))) {
-        return AppRoutes.home;
-      }
+    //   // if user is logged in but tries to access auth flow pages
+    //   if (isLoggedIn &&
+    //       (state.fullPath == '/' || state.fullPath!.startsWith('/auth'))) {
+    //     return AppRoutes.home;
+    //   }
 
-      // no redirection needed
-      return null;
-    },
+    //   // no redirection needed
+    //   return null;
+    // },
     routes: <RouteBase>[
       GoRoute(
         path: '/',
@@ -70,7 +71,12 @@ class AppRouters {
         path: AppRoutes.home,
         builder:
             (BuildContext context, GoRouterState state) =>
-                const HomeScreen(),
+                const Navigation()
+      ),
+      GoRoute(
+        path: AppRoutes.addPost,
+        builder:
+            (BuildContext context, GoRouterState state) => const AddPostPage(),
       )
     ],
   );

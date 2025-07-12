@@ -12,4 +12,7 @@ class AppRoutes {
   static const String otp = '/otp';
   /// for home page
   static const String home = '/home';
+
+  /// add Post
+  static const String addPost = '/addPost';
 }

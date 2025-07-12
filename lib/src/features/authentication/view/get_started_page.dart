@@ -3,6 +3,7 @@ import 'package:echo/src/core/extensions/context_extension.dart';
 import 'package:echo/src/core/extensions/image_extensions.dart';
 import 'package:echo/src/core/routes/app_routes.dart';
 import 'package:echo/src/core/utils/widgets/elevated_button.dart';
+import 'package:echo/src/core/utils/widgets/snackbarutils.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -136,9 +137,8 @@ class _GetStartedPageState extends State<GetStartedPage> {
                   const Gap(15),
                   EchoButton(
                     label: 'Log In',
-                    onPressed:
-                        () =>
-                            context.push(AppRoutes.authentication, extra: true),
+                    onPressed: showProfilePopup,
+                    //context.push(AppRoutes.authentication, extra: true),
                   ),
                 ],
               ),
@@ -148,4 +148,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
       ],
     ),
   );
+  void showProfilePopup() {
+    SnackbarUtils.showInfo(context, 'Not implemented yet');
+  }
 }

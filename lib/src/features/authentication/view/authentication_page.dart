@@ -11,6 +11,7 @@ import 'package:echo/src/core/utils/widgets/loading_animation.dart';
 import 'package:echo/src/core/utils/widgets/snackbarutils.dart';
 import 'package:echo/src/features/authentication/cubit/auth_cubit.dart';
 import 'package:echo/src/features/authentication/cubit/auth_state.dart';
+import 'package:echo/src/features/authentication/view/widgets/profile_bottom_sheet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -78,18 +79,27 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           unawaited(showLoading(context));
         } else if (state is AuthOtpSent) {
           context.pop();
-          SnackbarUtils.showSuccess(
-            context,
-            'OTP sent successfully to ${emailController.text}',
-          );
-          //context.go(AppRoutes.otp, extra: emailController.text);
+          // SnackbarUtils.showSuccess(
+          //   context,
+          //   'OTP sent successfully to ${emailController.text}',
+          //   duration: ,
+          // );
           setState(() {
             otpScreen = true;
           });
         } else if (state is AuthOtpVerified) {
           context.pop();
-          SnackbarUtils.showSuccess(context, 'OTP verified successfully');
-          context.go(AppRoutes.home);
+          SnackbarUtils.showSuccess(
+            context,
+            'OTP verified successfully',
+          );
+          if (widget.isLogIn) {
+            context.go(AppRoutes.home);
+          }
+        } else if (state is AuthUserNameReady) {
+          if (!widget.isLogIn) {
+            showProfilePopup(state.userName);
+          }
         } else if (state is AuthError) {
           context.pop();
           SnackbarUtils.showError(context, state.message);
@@ -289,5 +299,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         e.toString().replaceFirst('Exception: ', ''),
       );
     }
+  }
+
+  void showProfilePopup(String username) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) => ProfileBottomSheet(username: username),
+    );
   }
 }

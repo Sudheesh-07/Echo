@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 
 /// Utility class for displaying snack bars in the app.
@@ -21,8 +22,9 @@ class SnackbarUtils {
     _showSnackbar(
       context,
       message,
-      backgroundColor: Colors.green,
-      duration: duration,
+      'Success',
+      ContentType.success,
+      Colors.green.shade700,
     );
   }
 
@@ -39,8 +41,9 @@ class SnackbarUtils {
     _showSnackbar(
       context,
       message,
-      backgroundColor: Colors.red,
-      duration: duration,
+      'Error',
+      ContentType.failure,
+      Colors.red.shade900,
     );
   }
 
@@ -57,8 +60,9 @@ class SnackbarUtils {
     _showSnackbar(
       context,
       message,
-      backgroundColor: Colors.blueGrey,
-      duration: duration,
+      'Oh Hey!',
+      ContentType.help,
+      Colors.amber.shade600,
     );
   }
 
@@ -66,27 +70,28 @@ class SnackbarUtils {
   ///
   /// [context] is the BuildContext for displaying the snackbar.
   /// [message] is the text content of the snackbar.
-  /// [backgroundColor] is the background color of the snackbar.
-  /// [duration] is how long the snackbar will remain visible.
+  /// [title] is the title of the snackbar.
   static void _showSnackbar(
     BuildContext context,
-    String message, {
-    required Color backgroundColor,
-    required Duration duration,
-  }) {
+    String message,
+    String title,
+    ContentType contentType,
+    Color color, ) {
     final SnackBar snackBar = SnackBar(
-      content: Text(message, style: const TextStyle(color: Colors.white)),
-      backgroundColor: backgroundColor,
-      duration: duration,
       behavior: SnackBarBehavior.floating,
-      margin: const EdgeInsets.only(
-        top:16,// Positions near top
-        left: 16,
-        right: 16,
+      margin: EdgeInsets.only(
+        bottom: MediaQuery.of(context).size.height - 200,
+        left: 20,
+        right: 20,
       ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      backgroundColor: Colors.transparent,
+      content: AwesomeSnackbarContent(
+        title: title,
+        message: message,
+        contentType: contentType,
+        color: color,
+      ),
     );
-
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(snackBar);

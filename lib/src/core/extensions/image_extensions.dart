@@ -20,4 +20,6 @@ class AppImages {
   /// Loading animation for dark theme
   static const String loadingAnimationDark =
       'assets/animations/loading_dark.lottie';
+  /// The default image of the profile section
+  static const String profileImage = 'assets/icons/pfp.png';
 }
