@@ -183,7 +183,7 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
           const Gap(10),
           EchoButton(
             label: 'Save',
-            onPressed: () => context.push(AppRoutes.home),
+            onPressed: () => context.push(AppRoutes.navbar),
           ),
         ],
       ),

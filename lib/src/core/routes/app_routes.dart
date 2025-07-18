@@ -11,8 +11,9 @@ class AppRoutes {
     /// for Authentication Page
   static const String otp = '/otp';
   /// for home page
-  static const String home = '/home';
-
+  static const String navbar = '/nav-bar';
   /// add Post
   static const String addPost = '/addPost';
+  /// Custom Drawer
+  static const String customDrawer = '/customDrawer';
 }

@@ -89,12 +89,9 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           });
         } else if (state is AuthOtpVerified) {
           context.pop();
-          SnackbarUtils.showSuccess(
-            context,
-            'OTP verified successfully',
-          );
+          SnackbarUtils.showSuccess(context, 'OTP verified successfully');
           if (widget.isLogIn) {
-            context.go(AppRoutes.home);
+            context.go(AppRoutes.navbar);
           }
         } else if (state is AuthUserNameReady) {
           if (!widget.isLogIn) {
@@ -242,7 +239,9 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                           ),
                           child: EchoButton(
                             label: widget.isLogIn ? 'Log In' : 'Register',
-                            onPressed: sendOtp,
+                            onPressed:
+                                () => context.push(AppRoutes.customDrawer),
+                            //sendOtp,
                           ),
                         ),
                       ],
