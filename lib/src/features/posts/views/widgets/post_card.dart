@@ -1,12 +1,12 @@
 import 'package:echo/src/core/extensions/context_extension.dart';
-import 'package:echo/src/core/extensions/image_extensions.dart';
 import 'package:echo/src/core/utils/constants/padding_constants.dart';
 import 'package:echo/src/features/authentication/view/widgets/profile_bottom_sheet.dart';
 import 'package:echo/src/features/posts/model/comment.dart';
 import 'package:echo/src/features/posts/model/post.dart';
-import 'package:echo/src/features/posts/views/widgets/custom_bottom_sheet.dart';
+import 'package:echo/src/features/posts/views/widgets/comments_bottom_sheet.dart';
 import 'package:echo/src/features/posts/views/widgets/floating_chip.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
 
@@ -61,6 +61,60 @@ class _PostCardState extends State<PostCard> with TickerProviderStateMixin {
         likes: 3,
         userGender: Gender.male,
       ),
+      Comment(
+        id: '3',
+        postId: widget.post.id,
+        username: 'Charlie',
+        content: 'Thanks for sharing your thoughts on this topic.',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        likes: 3,
+        userGender: Gender.male,
+      ),
+      Comment(
+        id: '3',
+        postId: widget.post.id,
+        username: 'Charlie',
+        content: 'Thanks for sharing your thoughts on this topic.',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        likes: 3,
+        userGender: Gender.male,
+      ),
+      Comment(
+        id: '3',
+        postId: widget.post.id,
+        username: 'Charlie',
+        content: 'Thanks for sharing your thoughts on this topic.',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        likes: 3,
+        userGender: Gender.male,
+      ),
+      Comment(
+        id: '3',
+        postId: widget.post.id,
+        username: 'Charlie',
+        content: 'Thanks for sharing your thoughts on this topic.',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        likes: 3,
+        userGender: Gender.male,
+      ),
+      Comment(
+        id: '3',
+        postId: widget.post.id,
+        username: 'Charlie',
+        content: 'Thanks for sharing your thoughts on this topic.',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        likes: 3,
+        userGender: Gender.male,
+      ),
+      Comment(
+        id: '3',
+        postId: widget.post.id,
+        username: 'Charlie',
+        content: 'Thanks for sharing your thoughts on this topic.',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        likes: 3,
+        userGender: Gender.male,
+      ),
     ];
 
     showModalBottomSheet(
@@ -102,6 +156,7 @@ class _PostCardState extends State<PostCard> with TickerProviderStateMixin {
   }
 
   void _toggleLike() {
+    HapticFeedback.selectionClick();
     setState(() {
       if (!liked) {
         if (unLiked) {
@@ -118,7 +173,20 @@ class _PostCardState extends State<PostCard> with TickerProviderStateMixin {
     });
   }
 
-  void _toggleUnlike() {
+  Future<void> _toggleUnlike() async {
+  await HapticFeedback.heavyImpact();
+  
+  // Small delay
+  await Future.delayed(const Duration(milliseconds: 30));
+  
+  // Medium vibration
+  await HapticFeedback.vibrate();
+  
+  // Small delay
+  await Future.delayed(const Duration(milliseconds: 20));
+  
+  // Final light click
+  await HapticFeedback.lightImpact();
     setState(() {
       if (!unLiked) {
         if (liked) {
@@ -262,5 +330,4 @@ class _PostCardState extends State<PostCard> with TickerProviderStateMixin {
       const Divider(height: 0, thickness: 0.2),
     ],
   );
-
 }
