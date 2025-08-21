@@ -1,5 +1,6 @@
 // ignore_for_file: lines_longer_than_80_chars
 
+import 'package:echo/src/features/authentication/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 
 /// Base class for all authentication states.
@@ -73,4 +74,23 @@ class AuthUserNameReady extends AuthState {
 
   @override
   List<Object?> get props => <Object?>[userName];
+}
+
+class AuthUserRegistered extends AuthState {
+  /// Constructor
+  const AuthUserRegistered(this.user);
+
+  /// The user detail
+  final UserModel? user;
+  @override
+  List<Object?> get props => <Object?>[user];
+}
+
+/// Extension to get current user from state.
+extension AuthStateUserExtension on AuthState {
+  /// Current authenticated user if present.
+  UserModel? get currentUser => switch (this) {
+      AuthUserRegistered(user: final UserModel user) => user,
+      _ => null,
+    };
 }

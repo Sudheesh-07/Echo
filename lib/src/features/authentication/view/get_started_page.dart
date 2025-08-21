@@ -137,8 +137,9 @@ class _GetStartedPageState extends State<GetStartedPage> {
                   const Gap(15),
                   EchoButton(
                     label: 'Log In',
-                    onPressed: showProfilePopup,
-                    //context.push(AppRoutes.authentication, extra: true),
+                    onPressed:
+                        () =>
+                            context.push(AppRoutes.authentication, extra: true),
                   ),
                 ],
               ),

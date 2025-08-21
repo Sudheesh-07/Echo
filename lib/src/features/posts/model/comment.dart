@@ -12,7 +12,8 @@ class Comment {
   final Gender userGender;
   final String? parentCommentId; // For nested replies
   final List<Comment> replies; // Nested replies
-  final int depth; // How deep the comment is nested (0 for top-level)
+  final int depth; 
+  bool isLiked = false; // How deep the comment is nested (0 for top-level)
 
   Comment({
     required this.id,
@@ -26,6 +27,7 @@ class Comment {
     this.parentCommentId,
     this.replies = const [],
     this.depth = 0,
+    this.isLiked = false,
   });
 
   String get timeAgo {
@@ -50,6 +52,7 @@ class Comment {
     String? parentCommentId,
     List<Comment>? replies,
     int? depth,
+    bool? isLiked,
   }) {
     return Comment(
       id: id ?? this.id,

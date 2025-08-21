@@ -1,16 +1,28 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:echo/src/core/extensions/context_extension.dart';
 import 'package:echo/src/core/extensions/image_extensions.dart';
 import 'package:echo/src/core/routes/app_routes.dart';
 import 'package:echo/src/core/utils/constants/padding_constants.dart';
 import 'package:echo/src/core/utils/widgets/elevated_button.dart';
+import 'package:echo/src/features/authentication/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
-// ignore: public_member_api_docs
-enum Gender { male, female, other }
+/// Gender Enum to no mess up things
+enum Gender {
+  ///for Male
+  male,
+
+  ///for Female
+  female,
+
+  /// for other genders
+  other,
+}
 
 /// This is the profile bottom sheet that pops up to enter user info
 class ProfileBottomSheet extends StatefulWidget {
@@ -183,7 +195,12 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
           const Gap(10),
           EchoButton(
             label: 'Save',
-            onPressed: () => context.push(AppRoutes.navbar),
+            onPressed:
+                () => context.read<AuthCubit>().registerUser(
+                  usernameController.text,
+                  _selectedGender.name,
+                  _selectedImage ?? XFile(AppImages.profileImage),
+                ),
           ),
         ],
       ),
@@ -198,6 +215,7 @@ class _ProfileBottomSheetState extends State<ProfileBottomSheet> {
         onChanged: (Gender? value) {
           setState(() {
             _selectedGender = value!;
+            log(_selectedGender.name);
           });
         },
       ),

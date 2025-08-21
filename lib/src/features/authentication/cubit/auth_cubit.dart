@@ -1,6 +1,13 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
+import 'package:echo/src/core/extensions/image_extensions.dart';
 import 'package:echo/src/features/authentication/cubit/auth_state.dart';
+import 'package:echo/src/features/authentication/models/user_model.dart';
 import 'package:echo/src/services/auth_services.dart';
+import 'package:echo/src/services/user_service.dart';
+import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 
 /// Cubit for authentication state
 class AuthCubit extends Cubit<AuthState> {
@@ -9,6 +16,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   /// Authentication Services
   late final AuthService _authService = AuthService();
+  late final UserService _userService = UserService();
 
   /// Send OTP function
   Future<void> sendOtp({required String email}) async {
@@ -31,13 +39,12 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       emit(const AuthLoading());
       final String response = await _authService.verifyOtp(email, otp);
-      if (response == 'Success') {
+      if (response == 'Token saved Success') {
         emit(const AuthOtpVerified());
         final String userName = await getUserName();
         emit(AuthUserNameReady(userName));
         return 'Success';
-      }
-      else {
+      } else {
         emit(AuthError(response));
         return 'Error';
       }
@@ -52,6 +59,30 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final String response = await _authService.getUserName();
       return response;
+    } on Exception catch (e) {
+      emit(AuthError(e.toString()));
+      return 'Error';
+    }
+  }
+
+  /// Save/Register the User
+  Future<String> registerUser(
+    String userName,
+    String gender,
+    XFile profilePic,
+  ) async {
+    try {
+      final UserModel? user = await _authService.saveUser(
+        username: userName,
+       gender:  gender,
+        profileImage:  profilePic,
+      );
+      if (user != null) {
+        emit(AuthUserRegistered(user));
+        return 'User Saved successfully';
+      } else {
+        throw Exception('User not found');
+      }
     } on Exception catch (e) {
       emit(AuthError(e.toString()));
       return 'Error';

@@ -90,7 +90,7 @@ class _AddPostPageState extends State<AddPostPage> {
         const Spacer(),
         Divider(color: context.colorScheme.primaryFixedDim,),
         Row(
-          children: [
+          children: <Widget>[
             IconButton(
               onPressed: () {},
               icon: const Icon(HugeIcons.strokeRoundedImage01),
@@ -105,4 +105,3 @@ class _AddPostPageState extends State<AddPostPage> {
     ),
   );
 }
-

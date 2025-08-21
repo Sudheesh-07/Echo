@@ -1,8 +1,13 @@
 import 'dart:async';
+import 'dart:developer';
+import 'dart:io';
+import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:echo/src/core/utils/constants/api_constants.dart';
+import 'package:echo/src/features/authentication/models/user_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 /// This Class is for the services of Authentication Like login signup etc
 class AuthService {
@@ -116,9 +121,9 @@ class AuthService {
         if (accessToken != null && refreshToken != null) {
           await storage.write('access_token', accessToken);
           await storage.write('refresh_token', refreshToken);
-          //return 'Token saved Success';
+          return 'Token saved Success';
         }
-        return 'Success';
+        return 'Token not saved';
       } else {
         throw Exception('Invalid OTP');
       }
@@ -138,7 +143,8 @@ class AuthService {
 
   Future<String> getUserName() async {
     try {
-      final Response<Map<String, dynamic>> response = await _dio.get<Map<String, dynamic>>('/random_username');
+      final Response<Map<String, dynamic>> response = await _dio
+          .get<Map<String, dynamic>>('/random_username');
       if (response.data?['username'] != null) {
         return response.data?['username'] as String;
       } else {
@@ -155,6 +161,94 @@ class AuthService {
       }
     } catch (e) {
       throw Exception('Unexpected error: $e');
+    }
+  }
+  Future<UserModel?> getUser() async {
+    final accessToken = storage.read('access_token');
+    try {
+      final Response<Map<String, dynamic>> response = await _dio.get(
+        '/get-user',
+        options: Options(headers: <String, dynamic>{'Authorization': 'Bearer $accessToken'}),
+      );
+      if (response.data == null) {
+        throw Exception('No user data received');
+      }
+      return UserModel.fromJson(response.data!);
+    } on DioException catch (e) {
+      if (e.response != null) {
+        throw Exception(
+          (e.response?.data as Map<String, dynamic>)['detail']?.toString() ??
+              'User name not found',
+        );
+      } else {
+        throw Exception('Network error: ${e.message}');
+      }
+    } catch (e) {
+      throw Exception('Unexpected error: $e');
+    }
+  }
+
+  /// Save/Update user details (username, gender, profile pic)
+  Future<UserModel?> saveUser({
+    required String username,
+    required String gender,
+    required XFile profileImage,
+  }) async {
+    try {
+      final accessToken = storage.read('access_token');
+      if (accessToken == null) {
+        throw Exception("No access token found, please login again.");
+      }
+
+      // Prepare form data
+      final FormData formData = FormData.fromMap(<String, dynamic>{
+        "token": accessToken, // backend expects token in form
+        "username": username,
+        "gender": gender,
+        "profile_image": await MultipartFile.fromFile(
+          profileImage.path,
+          filename: profileImage.name,
+          contentType: MediaType(
+            "image",
+            profileImage.path.split('.').last.toLowerCase(), // jpeg/png/webp
+          ),
+        ),
+      });
+
+      final Response<Map<String, dynamic>> response = await _dio.put(
+        '/save-user',
+        data: formData,
+        options: Options(headers: <String, dynamic>{"Content-Type": "multipart/form-data"}),
+      );
+       final data = response.data;
+      if (data == null) {
+        throw Exception("No response from server.");
+      }
+
+      if (response.statusCode == 200 && data.containsKey("message")) {
+        if (kDebugMode) {
+          log("Save User Success: ${data['message']}");
+          log("New Profile Pic: ${data['profile_pic_url']}");
+          log("Compression: ${data['compressed_ratio']}");
+        }
+
+        // Fetch updated user from backend
+        final UserModel? updatedUser = await getUser();
+        return updatedUser;
+      } else {
+        throw Exception(data['detail'] ?? 'Unexpected server response');
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+        throw Exception(
+          (e.response?.data as Map<String, dynamic>)['detail']?.toString() ??
+              'Failed to save user',
+        );
+      } else {
+        throw Exception("Network error: ${e.message}");
+      }
+    } catch (e) {
+      throw Exception("Unexpected error: $e");
     }
   }
 }

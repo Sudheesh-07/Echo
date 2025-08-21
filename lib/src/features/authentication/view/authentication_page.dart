@@ -239,9 +239,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                           ),
                           child: EchoButton(
                             label: widget.isLogIn ? 'Log In' : 'Register',
-                            onPressed:
-                                () => context.push(AppRoutes.customDrawer),
-                            //sendOtp,
+                            onPressed: sendOtp,
                           ),
                         ),
                       ],
@@ -286,10 +284,11 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     await HapticFeedback.heavyImpact();
     try {
       if (_otpController.text.isNotEmpty) {
-        await authCubit.verifyOtp(
+        String response = await authCubit.verifyOtp(
           email: emailController.text,
           otp: _otpController.text,
         );
+        SnackbarUtils.showSuccess(context, response);
       }
     } on Exception catch (e) {
       await HapticFeedback.vibrate().then((_) => HapticFeedback.mediumImpact());

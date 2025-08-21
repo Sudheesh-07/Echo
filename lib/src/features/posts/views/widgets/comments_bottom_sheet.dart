@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:echo/src/core/extensions/context_extension.dart';
 import 'package:echo/src/core/extensions/image_extensions.dart';
 import 'package:echo/src/core/utils/constants/padding_constants.dart';
@@ -11,14 +13,13 @@ import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class CommentsBottomSheet extends StatefulWidget {
-  final Post post;
-  final List<Comment> comments;
-
   const CommentsBottomSheet({
     super.key,
     required this.post,
     required this.comments,
   });
+  final Post post;
+  final List<Comment> comments;
 
   @override
   State<CommentsBottomSheet> createState() => _CommentsBottomSheetState();
@@ -60,10 +61,10 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
     final Comment newComment = Comment(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       postId: widget.post.id,
-      username: "You", // Replace with actual current user
+      username: 'You', // Replace with actual current user
       content: _commentController.text.trim(),
       createdAt: DateTime.now(),
-      userGender: Gender.male, // Replace with actual current user gender
+      userGender: Gender.male, 
       parentCommentId: _replyingToCommentId,
     );
 
@@ -123,10 +124,9 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-    final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
+    final double bottomPadding = MediaQuery.of(context).viewInsets.bottom;
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.8,
@@ -146,7 +146,6 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
               border: Border(
                 bottom: BorderSide(
                   color: context.colorScheme.outline.withOpacity(0.2),
-                  width: 1,
                 ),
               ),
             ),
@@ -263,7 +262,7 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
           // Floating input field that appears above keyboard
           if (_isKeyboardVisible)
             Column(
-              children: [
+              children: <Widget>[
                 // Show reply indicator above the input when keyboard is visible
                 if (_replyingToCommentId != null)
                   Container(
@@ -308,7 +307,6 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
                       border: Border(
                         top: BorderSide(
                           color: context.colorScheme.outline.withOpacity(0.2),
-                          width: 1,
                         ),
                       ),
                     ),
@@ -327,7 +325,6 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
                 border: Border(
                   top: BorderSide(
                     color: context.colorScheme.outline.withOpacity(0.2),
-                    width: 1,
                   ),
                 ),
               ),
@@ -338,59 +335,70 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
     );
   }
 
-  Widget _buildInputField() {
-    return Row(
-      children: <Widget>[
-        CircleAvatar(
-          radius: 16,
-          backgroundImage: Image.asset(AppImages.profileImage).image,
-        ),
-        const Gap(12),
-        Expanded(
-          child: TextField(
-            controller: _commentController,
-            focusNode: _commentFocusNode,
-            decoration: InputDecoration(
-              hintText:
-                  _replyingToCommentId == null
-                      ? 'Add a comment...'
-                      : 'Reply to $_replyingToUsername...',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide.none,
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
+  Widget _buildInputField() => Row(
+    children: <Widget>[
+      CircleAvatar(
+        radius: 16,
+        backgroundImage: Image.asset(AppImages.profileImage).image,
+      ),
+      const Gap(12),
+      Expanded(
+        child: TextField(
+          controller: _commentController,
+          focusNode: _commentFocusNode,
+          decoration: InputDecoration(
+            hintText:
+                _replyingToCommentId == null
+                    ? 'Add a comment...'
+                    : 'Reply to $_replyingToUsername...',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide.none,
             ),
-            maxLines: null,
-            textCapitalization: TextCapitalization.sentences,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
           ),
+          maxLines: null,
+          textCapitalization: TextCapitalization.sentences,
         ),
-        const Gap(8),
-        IconButton(
-          onPressed: _addComment,
-          icon: Icon(Icons.send, color: context.colorScheme.primary),
+      ),
+      const Gap(8),
+      IconButton(
+        onPressed: _addComment,
+        icon: HugeIcon(
+          icon: HugeIcons.strokeRoundedSent,
+          color: context.colorScheme.primary,
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
 }
 
-// Keep the CommentTile class exactly as it was before
-// Keep the CommentTile class exactly as it was before
+///The widget for the comment in the comment section
 class CommentTile extends StatefulWidget {
-  final Comment comment;
-  final Function(Comment) onReply;
-  final Function(Comment) onLike;
-
+  ///The widget for the comment in the comment section
   const CommentTile({
-    super.key,
+    /// The comment object
     required this.comment,
+
+    /// The callback when the user replies to this comment
     required this.onReply,
+
+    /// The callback when the user likes this comment
     required this.onLike,
+    super.key,
   });
+
+  ///The comment object
+  final Comment comment;
+
+  /// on Reply Callback function
+  final Function(Comment) onReply;
+
+  /// on Like Callback function
+  final Function(Comment) onLike;
 
   @override
   State<CommentTile> createState() => _CommentTileState();
@@ -469,7 +477,7 @@ class _CommentTileState extends State<CommentTile> {
         }
         widget.comment.likes += 1;
         liked = true;
-        _showFloatingChip("Aura +", true);
+        _showFloatingChip('Aura +', true);
       } else {
         widget.comment.likes -= 1;
         liked = false;
@@ -499,7 +507,7 @@ class _CommentTileState extends State<CommentTile> {
         }
         widget.comment.likes -= 1;
         unLiked = true;
-        _showFloatingChip("Aura -", false);
+        _showFloatingChip('Aura -', false);
       } else {
         widget.comment.likes += 1;
         unLiked = false;
@@ -572,7 +580,7 @@ class _CommentTileState extends State<CommentTile> {
                               liked
                                   ? Colors.green[600]
                                   : context.colorScheme.onPrimary,
-                          size: 30,
+                          size: 25,
                         ),
                       ),
                       const Gap(5),
@@ -587,7 +595,7 @@ class _CommentTileState extends State<CommentTile> {
                               unLiked
                                   ? Colors.red[600]
                                   : context.colorScheme.onPrimary,
-                          size: 30,
+                          size: 25,
                         ),
                       ),
                       const Gap(16),
@@ -605,7 +613,7 @@ class _CommentTileState extends State<CommentTile> {
                         GestureDetector(
                           onTap: toggleReplies,
                           child: Text(
-                            _showReplies ?  'Hide replies':'View replies' ,
+                            _showReplies ? 'Hide replies' : 'View replies',
                             style: context.textTheme.bodySmall?.copyWith(
                               fontWeight: FontWeight.w500,
                             ),
